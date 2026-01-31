@@ -1,39 +1,6 @@
 from timer import PomodoroTimer
-from task import add_task, complete_pomodoro, read_tasks
-from report import daily_summary
-
-def show_tasks():
-    tasks = read_tasks()
-
-    if not tasks:
-        print("No tasks available.")
-        return
-
-    print("\nCurrent Tasks:")
-    for task in tasks:
-        print(
-            f"- {task['task_name']} | "
-            f"{task['completed_pomodoros']}/{task['estimated_pomodoros']} | "
-            f"{task['status']}"
-        )
-
-def select_task():
-    tasks = read_tasks()
-    if not tasks:
-        print("No tasks available.")
-        return None
-
-    print("\nSelect a task:")
-    for i, task in enumerate(tasks, start=1):
-        print(f"{i}. {task['task_name']} ({task['status']})")
-
-    while True:
-        choice = input("Enter task number: ")
-        if choice.isdigit():
-            choice = int(choice)
-            if 1 <= choice <= len(tasks):
-                return tasks[choice - 1]['task_name']
-        print("Invalid choice, try again")
+from task import add_task, complete_pomodoro, read_tasks,show_tasks, select_task, check_task_status, pomodoros_count
+from datetime import date
 
 def main():
     timer = PomodoroTimer()
@@ -53,7 +20,8 @@ def main():
             name = input("Task name: ")
             category = input("Category: ")
             estimated = input("Estimated Pomodoros: ")
-            add_task(name, category, estimated)
+            due_date = input("Due date (YYYY-MM-DD): ")
+            add_task(name, category, estimated, due_date)
             print("Task added")
 
         elif choice == "2":
@@ -61,17 +29,29 @@ def main():
 
         elif choice == "3":
             task_name = select_task()
+           
             if task_name:
-                timer.start()
-                timer.complete()
-                complete_pomodoro(task_name)
-                print(f"Pomodoro for '{task_name}' completed and recorded")
+                while True:
+                    if check_task_status(task_name):
+                        print(f"Task '{task_name}' is already completed.")
+                        break
+
+                    timer.start()
+                    timer.complete()
+                    complete_pomodoro(task_name)
+                    print(f"Pomodoro for '{task_name}' completed and recorded")
+            
+                    study_again = input("Start another Pomodoro for this task? (y/n): ").lower()
+                    if study_again != "y":
+                        break
 
         elif choice == "4":
             show_tasks()
 
         elif choice == "5":
-            daily_summary()
+            today_pomodoros_count = pomodoros_count()         
+            print(f"Pomodoros completed today: {today_pomodoros_count}")
+            print(f"Focus time today: {today_pomodoros_count * 25} minutes")
 
         elif choice == "6":
             print("Goodbye!")

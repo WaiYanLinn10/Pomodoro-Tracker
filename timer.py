@@ -21,11 +21,17 @@ class PomodoroTimer:
 
     def pause(self):
         self.running = False
-        print("⏸ Pomodoro paused")
+        print("Pomodoro paused")
+
+    def reset(self):
+        self.running = False
+        self.remaining_time = 0
+        print("Pomodoro reset")
 
     def complete(self):
         print("Pomodoro completed")
         print("Break time (5 minutes)")
         self.countdown(self.BREAK_TIME)
+        print("Break done, Go for the next Pomodoro?")
 
     

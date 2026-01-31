@@ -1,2 +1,3 @@
-task_name,category,estimated_pomodoros,completed_pomodoros,status
-English Homework,Study,4,4,completed
+task_name,category,estimated_pomodoros,completed_pomodoros,status,start_date,due_date,end_date
+English Homework,Study,5,4,in progress,2026-01-30,2026-01-31,
+Math Homework,Study,6,2,in progress,2026-01-30,2026-02-03,
