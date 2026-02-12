@@ -6,6 +6,7 @@ class PomodoroTimer:
 
     def __init__(self):
         self.running = False
+        self.remaining_time = 0
 
     def countdown(self, seconds):
         while seconds > 0 and self.running:
